@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b25">
+  <title>Math Tower Defense : Galaxy Guardians - Dyta Felisha</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark">✦</div>
+      <div><p class="eyebrow">AKADEMI GALAKSI • MISI MATEMATIKA</p><h1>Math Tower Defense <span>Galaxy Guardians</span></h1></div>
+      <div class="sound-controls"><button id="mute-btn" class="icon-btn" aria-label="Matikan atau nyalakan suara">♫ Suara: ON</button><label class="volume-control" for="volume-slider">Vol. <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="0.28" aria-label="Volume suara"></label></div>
+    </header>
+
+    <section id="menu-screen" class="screen menu-screen">
+      <div class="hero-copy">
+        <div class="pill">🚀 MISI PENJAGA GALAKSI - DYTA FELISHA (2530105016) 3A</div>
+        <h2>Asah logika.<br><span class="gradient-text">Selamatkan galaksi.</span></h2>
+        <p>Jawab soal matematika, bangun menara energi, dan lindungi kerajaan galaksi dari alien yang mengerikan!</p>
+        <div class="feature-row"><span>🧠 Tantangan matematika</span><span>✋ Kontrol gerakan tangan</span><span>🌌 Pertahanan galaksi</span></div>
+      </div>
+      <div class="level-panel">
+        <h3>Pilih tingkat misi</h3>
+        <p class="muted">Pilih level untuk memulai pertahanan, atau coba kontrol di mode percobaan.</p><div class="player-modes"><button id="mode-one" class="secondary-btn">👤 Mode 1 Pemain</button><button id="mode-two" class="secondary-btn">🤝 Mode 2 Pemain</button></div><button id="trial-mode" class="secondary-btn trial-btn">✋ Mode Percobaan</button><p class="muted">Mode 2 pemain: tangan kiri layar mengontrol soal (Pemain 1), tangan kanan mengontrol peta dan bengkel (Pemain 2).</p>
+        <div class="time-settings"><h4>⏱ Pengaturan Waktu Soal</h4><label>Penjelajah <input id="time-mudah" type="number" min="1" value="30"> detik <input type="checkbox" id="untimed-mudah"> Tanpa batas</label><label>Penjaga <input id="time-sedang" type="number" min="1" value="20"> detik <input type="checkbox" id="untimed-sedang"> Tanpa batas</label><label>Legendaris <input id="time-sulit" type="number" min="1" value="5"> detik <input type="checkbox" id="untimed-sulit"> Tanpa batas</label><label>Soal per gelombang <input id="questions-per-wave" type="number" min="1" value="5"></label><button id="reset-times" class="small-btn">Kembalikan Bawaan</button></div><button class="level-card easy" data-level="mudah"><span class="level-icon">🪐</span><span><b>Penjelajah</b><small>Mudah · 5 gelombang · 30 detik/soal</small></span><span class="arrow">↗</span></button>
+        <button class="level-card medium" data-level="sedang"><span class="level-icon">🚀</span><span><b>Penjaga</b><small>Sedang · 5 gelombang · 20 detik/soal</small></span><span class="arrow">↗</span></button>
+        <button class="level-card hard" data-level="sulit"><span class="level-icon">☄️</span><span><b>Legendaris</b><small>Sulit · 5 gelombang · 5 detik/soal · Boss gelombang 5</small></span><span class="arrow">↗</span></button>
+        <div class="best-score">🏆 Skor tertinggi <strong id="best-score">0</strong></div>
+      </div>
+      <div class="privacy-notice">🔒 Privasi: video kamera diproses di perangkat ini saja; tidak direkam, disimpan, atau dikirim ke mana pun. Kamera opsional—game bisa dimainkan penuh dengan mouse dan keyboard.</div><div class="menu-bottom">KAMERA OPSIONAL • MOUSE & KEYBOARD SELALU TERSEDIA</div>
+    </section>
+
+    <section id="game-screen" class="screen game-screen hidden">
+      <div class="hud">
+        <div class="hud-stat"><span>💜 NYAWA</span><b id="lives">❤️❤️❤️❤️❤️</b></div>
+        <div class="hud-stat"><span>⚡ ENERGI</span><b id="energy">0</b></div><div class="hud-stat"><span>🔋 ENERGI</span><b id="attack-stock">0</b></div>
+        <div class="hud-stat"><span>🌊 GELOMBANG</span><b id="wave">0/5</b></div>
+        <div class="hud-stat"><span>⭐ SKOR</span><b id="score">0</b></div>
+        <div class="hud-stat timer-stat"><span>⏱ WAKTU</span><b id="timer">20</b></div>
+      </div>
+          <div class="phase-steps" id="phase-steps"><b data-phase="question">1 · JAWAB</b><b data-phase="build">2 · BANGUN</b><b data-phase="wave">3 · BERTAHAN</b><span id="phase-status">Fase Jawab Soal</span></div>
+      <div class="game-tools"><button id="pause-btn" class="small-btn">⏸ Jeda</button><button id="settings-btn" class="small-btn">⚙ Pengaturan</button><button id="fullscreen-btn" class="small-btn">⛶ Layar penuh</button><span id="combo-display">Combo ×0</span></div>
+      <div id="settings-panel" class="settings-panel hidden"><label>Volume utama <input id="settings-volume" type="range" min="0" max="1" step="0.05" value="0.8"></label><label>Musik <input id="music-volume" type="range" min="0" max="1" step="0.05" value="0.42"></label><label>Efek <input id="effects-volume" type="range" min="0" max="1" step="0.05" value="0.8"></label><label>Kepekaan kursor <input id="sensitivity-setting" type="range" min="10" max="60" step="5" value="30"></label><label>Tahan pilih <input id="dwell-setting" type="range" min="500" max="2000" step="100" value="1000"></label><label>Intensitas suara <select id="sound-intensity"><option value="soft">Lembut</option><option value="normal" selected>Normal</option></select></label><label><input id="light-mode" type="checkbox"> Mode Ringan</label><button id="calibrate-camera" class="small-btn">Tes / Kalibrasi Kamera</button><button id="settings-mute" class="small-btn">Mute / Suara</button><button id="settings-camera" class="small-btn">Kamera</button><button id="settings-restart" class="small-btn">Ulangi</button><button id="settings-menu" class="small-btn">Kembali ke Menu</button></div>
+      <div id="pause-overlay" class="pause-overlay hidden"><h2>⏸ Misi Dijeda</h2><p>Tarik napas, penjaga galaksi.</p><button id="resume-btn" class="primary-btn">Lanjutkan</button></div>
+      <div id="boss-warning" class="boss-warning hidden">⚠ RAJA ALIEN MENDEKAT ⚠</div>
+      <div class="boss-health"><span id="boss-name"></span><i id="boss-health-fill"></i></div>
+      <div class="game-layout">
+        <div class="arena-wrap">
+          <div class="arena-heading"><span id="mission-label">MISI PENJAGA GALAKSI</span><span class="status-dot">● SISTEM AKTIF</span></div>
+          <canvas id="game-canvas" width="900" height="540" aria-label="Arena pertahanan galaksi"></canvas>
+          <div class="arena-footer"><span>✦ Jalur portal alien</span><span id="tower-count">Menara: 0</span><span>✦ Klik menara, lalu pilih area kosong</span></div>
+          <div class="build-card" id="tower-workshop" aria-label="Bengkel Menara">
+            <div class="workshop-heading"><b>🛠️ Bengkel Menara</b><span>Energi <strong id="workshop-energy">0</strong></span></div>
+            <div class="tower-options">
+              <button class="tower-option" data-tower="laser" aria-label="Laser, 1 energi, hadiah 3 tembakan"><span class="tower-art laser-art">⌁</span><b>Laser</b><small>⚡ 1 energi</small><small class="ammo-gift">🎯 3 tembakan</small></button>
+              <button class="tower-option" data-tower="freeze" aria-label="Pemerlambat, 2 energi, hadiah 3 tembakan"><span class="tower-art freeze-art">❄</span><b>Pemerlambat</b><small>⚡ 2 energi</small><small class="ammo-gift">🎯 3 tembakan</small></button>
+              <button class="tower-option" data-tower="bomb" aria-label="Bom, 3 energi, hadiah 3 tembakan"><span class="tower-art bomb-art">✹</span><b>Bom</b><small>⚡ 3 energi</small><small class="ammo-gift">🎯 3 tembakan</small></button>
+            </div>
+            <div class="workshop-bottom"><span id="build-hint">Pilih menara, lalu klik area kosong</span><button id="cancel-build" class="small-btn" type="button">Batal</button></div>
+            <button id="start-alien-attack" class="primary-btn hidden">Mulai Serangan Alien</button>
+          </div>
+
+        </div>
+        <aside class="side-panel">
+          <div class="camera-card">
+            <div class="panel-title"><span>✋ KONTROL GESTUR</span><span id="camera-state" class="camera-state">NONAKTIF</span></div>
+            <div class="camera-view"><video id="webcam" autoplay playsinline muted></video><div id="camera-placeholder">Kamera belum aktif<br><small>Aktifkan untuk kontrol tangan</small></div><canvas id="hand-landmarks"></canvas></div>
+            <div class="camera-actions"><button id="camera-btn" class="small-btn">Aktifkan kamera</button><span id="gesture-hint">Mouse/keyboard siap</span></div><div id="camera-calibration" class="hidden">Kalibrasi: jarak 50–100 cm, cahaya dari depan, latar tidak ramai. Pastikan indikator menunjukkan tangan terbaca.</div><div class="privacy-mini">● Kamera aktif hanya saat diizinkan. Video diproses lokal dan tidak direkam/disimpan/dikirim.</div>
+          </div>
+          <div class="question-card">
+            <div class="panel-title"><span>🧠 TANTANGAN MATEMATIKA</span><span id="difficulty-tag" class="difficulty-tag">MUDAH</span></div>
+            <div class="question-progress"><span id="question-number">SOAL 1 DARI 5</span><span><i id="question-progress-fill"></i></span></div>
+            <h3 id="question-text">Bersiaplah, penjaga!</h3>
+            <div id="answer-options" class="answer-options"></div>
+            <div id="feedback" class="feedback" aria-live="polite">Jawab benar untuk memperoleh energi.</div>
+            <div class="question-actions"><button id="submit-answer" class="primary-btn hidden">Kunci jawaban</button><button id="skip-question" class="text-btn">Lewati soal</button></div>
+          </div>
+          <button id="exit-game" class="exit-btn">← Kembali ke menu</button>
+        </aside>
+      </div>
+    </section>
+
+    <section id="result-screen" class="screen result-screen hidden">
+      <div class="result-orbit">✦</div><p class="eyebrow" id="result-eyebrow">MISI SELESAI</p>
+      <h2 id="result-title">Galaksi terselamatkan!</h2><p id="result-message">Kerja bagus, penjaga.</p>
+      <div class="star-rating" id="star-rating">★★★</div>
+      <div class="result-stats"><div><span>SKOR AKHIR</span><b id="final-score">0</b></div><div><span>AKURASI</span><b id="final-accuracy">0%</b></div><div><span>JAWABAN BENAR</span><b id="final-correct">0/0</b></div><div><span>GELOMBANG</span><b id="final-wave">0/5</b></div></div>
+      <div class="result-stats extra-stats"><div><span>ALIEN DIKALAHKAN</span><b id="final-kills">0</b></div><div><span>WAKTU RATA-RATA</span><b id="final-average">—</b></div><div><span>JAWABAN SALAH</span><b id="final-wrong">0</b></div><div><span>SKOR TERTINGGI LEVEL</span><b id="final-best-level">0</b></div></div><div id="teacher-report" class="teacher-report"><h3>Rekap untuk Guru</h3><pre id="teacher-report-text">Rekap akan tampil setelah misi.</pre><button id="copy-report" class="secondary-btn">Salin rekap</button></div><div class="result-actions"><button id="play-again" class="primary-btn">Main lagi 🚀</button><button id="back-menu" class="secondary-btn">Pilih level lain</button><button id="result-fullscreen" class="secondary-btn">⛶ Layar penuh</button></div>
+    </section>
+    <footer class="site-footer">GALAXY GUARDIANS <span>•</span> BELAJAR MATEMATIKA JADI PETUALANGAN</footer>
+  </main>
+  <script src="js/questions.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+  <!-- Webcam hand tracking: CDN digunakan agar runtime dan model termuat saat internet tersedia. -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="js/handtracking.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

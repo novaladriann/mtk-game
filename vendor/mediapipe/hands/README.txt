@@ -1,0 +1,1 @@
+MediaPipe Hands runtime dan aset model dimuat dari CDN resmi jsDelivr ketika webcam diaktifkan. Internet diperlukan untuk gestur tangan. URL dan versi dikunci di index.html dan js/handtracking.js. Game tetap bisa dimainkan dengan mouse/keyboard jika CDN atau model tidak tersedia.
